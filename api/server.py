@@ -5,7 +5,7 @@ import json
 import os
 import time
 import datetime
-from flask_ask import Ask, statement
+from flask_ask import Ask, statement, question, session, delegate
 import logging
 from typing import Dict
 
@@ -30,112 +30,29 @@ CORS(app, supports_credentials=True, resources={r"/*": {
 def run(port, hostname, debug_mode):
     app.run(host=hostname, port=port, debug=debug_mode, threaded=True)
 
+
 @ask.launch
 def start():
-    speech_text = "Willkommen bei MetaExp. Einer interaktiven Graphexplorationssoftware. Bitte sage deine erste Auswahl"
+    speech_text = "Willkommen bei MetaExp. Einer interaktiven Graphexplorationssoftware. Wie kann ich behilflich sein?"
     return statement(speech_text).simple_card("Greeting", speech_text)
+
+@ask.intent("ProblemDescription")
+def problem_description(first_name, second_name):
+    return statement("Erzählt mir von euren verschiedenen Vorlieben.")
+
+@ask.intent("PreferenceDialog")
+def preference_dialog(firstPreference, secondPreference):
+    dialog_state = get_dialog_state()
+    if dialog_state != "COMPLETED":
+        return delegate()
+    return statement("OK")
+
+def get_dialog_state():
+    return session['dialogState']
+
 
 # Self defined intents
 @ask.intent('MovieSearch')
 def choose_dataset(film, actor):
     speech_text = "Du hast {} und {} gesagt?".format(film, actor)
     return statement(speech_text).simple_card('MovieSearch', speech_text)
-
-@ask.intent('SearchProducer')
-def rate_metapath():
-    raise NotImplementedError()
-
-
-@ask.intent('ExcludeEdgeType')
-def exclude_edge_type():
-    raise NotImplementedError()
-
-
-@ask.intent('ExcludeNodeType')
-def exclude_node_type():
-    raise NotImplementedError()
-
-
-@ask.intent('ShowMoreMetapaths')
-def show_more_metapaths():
-    raise NotImplementedError()
-
-
-@ask.intent('ShowResults')
-def show_results():
-    raise NotImplementedError()
-
-
-# Built-in intents
-@ask.intent('AMAZON.CancelIntent')
-def cancel():
-    raise NotImplementedError()
-
-
-@ask.intent('AMAZON.HelpIntent')
-def help():
-    raise NotImplementedError()
-
-
-@ask.intent('AMAZON.StopIntent')
-def stop():
-    raise NotImplementedError()
-
-
-@ask.intent('AMAZON.MoreIntent')
-def more():
-    raise NotImplementedError()
-
-
-@ask.intent('AMAZON.NavigateHomeIntent')
-def navigate_home():
-    raise NotImplementedError()
-
-
-@ask.intent('AMAZON.NavigateSettingsIntent')
-def navigate_settings():
-    raise NotImplementedError()
-
-
-@ask.intent('AMAZON.NextIntent')
-def next():
-    raise NotImplementedError()
-
-
-@ask.intent('AMAZON.PageUpIntent')
-def page_up():
-    raise NotImplementedError()
-
-
-@ask.intent('AMAZON.PageDownIntent')
-def page_down():
-    raise NotImplementedError()
-
-
-@ask.intent('AMAZON.PreviousIntent')
-def previous():
-    raise NotImplementedError()
-
-
-@ask.intent('AMAZON.ScrollRighIntent')
-def scroll_right():
-    raise NotImplementedError()
-
-
-@ask.intent('AMAZON.ScrollDownIntent')
-def scroll_down():
-    raise NotImplementedError()
-
-
-@ask.intent('AMAZON.ScrollLeftIntent')
-def scroll_left():
-    raise NotImplementedError()
-
-
-@ask.intent('AMAZON.ScrollUpIntent')
-def scroll_up():
-    raise NotImplementedError()
-
-
-if __name__ == '__main__':
-    app.run(port=API_PORT, threaded=True, debug=True)

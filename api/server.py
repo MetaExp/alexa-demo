@@ -30,6 +30,11 @@ CORS(app, supports_credentials=True, resources={r"/*": {
 def run(port, hostname, debug_mode):
     app.run(host=hostname, port=port, debug=debug_mode, threaded=True)
 
+@ask.launch()
+def start():
+    speech_text = "Willkommen bei MetaExp. Einer interaktiven Graphexplorationssoftware. Bitte sage deine erste Auswahl"
+    return statement(speech_text).simple_card("Greeting", speech_text)
+
 # Self defined intents
 @ask.intent('MovieSearch')
 def choose_dataset(film, actor):

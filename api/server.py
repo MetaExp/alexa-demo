@@ -42,10 +42,10 @@ def problem_description(firstName, secondName):
     return question("Erzählt mir von euren verschiedenen Vorlieben. Was sind deine Vorlieben, {}?".format(firstName))
 
 @ask.intent("PreferenceDialog")
-def preference_dialog(firstPreference, secondName):
+def preference_dialog(firstPreference, secondPreference):
     dialog_state = get_dialog_state()
     if dialog_state != "COMPLETED":
-        return elicit_slot(secondName, "Und du, {}? Was sind deine Vorlieben?".format(second_name))
+        return elicit_slot(secondPreference, "Und du, {}? Was sind deine Vorlieben?".format(second_name))
     return question("Okay, lasst mich euer Problem lösen. Ich bin ein super Streitschlichter.")
 
 def get_dialog_state():

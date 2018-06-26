@@ -44,9 +44,14 @@ def problem_description(firstName, secondName):
 @ask.intent("PreferenceDialog")
 def preference_dialog(firstPreference, secondPreference):
     dialog_state = get_dialog_state()
-    if dialog_state != "COMPLETED":
+    if dialog_state == "STARTED":
+        return delegate()
+    elif dialog_state != "COMPLETED":
         return elicit_slot(secondPreference, "Und du, {}? Was sind deine Vorlieben?".format(second_name))
-    return question("Okay, lasst mich euer Problem lösen. Ich bin ein super Streitschlichter.")
+    else:
+        return statement("Okay, lasst mich euer Problem lösen. Ich bin ein super Streitschlichter."
+                    "Glücklicherweise habe ich gerade in meinem Knowledge Graph einen Film gefunden der euch beide "
+                    "zufriedenstellt. Der Film ist" )
 
 def get_dialog_state():
     return session['dialogState']

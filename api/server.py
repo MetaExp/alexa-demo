@@ -37,8 +37,8 @@ def start():
     return statement(speech_text).simple_card("Greeting", speech_text)
 
 @ask.intent("ProblemDescription")
-def problem_description(first_name, second_name):
-    return statement("Erzählt mir von euren verschiedenen Vorlieben.")
+def problem_description(firstName, secondName):
+    return statement("Erzählt mir von euren verschiedenen Vorlieben. Was sind deine Vorlieben, {}?".format(firstName))
 
 @ask.intent("PreferenceDialog")
 def preference_dialog(firstPreference, secondPreference):

@@ -33,7 +33,7 @@ def run(port, hostname, debug_mode):
 # Self defined intents
 @ask.intent('MovieSearch')
 def choose_dataset(movie, actor):
-    speech_text = ""
+    speech_text = "Du hast {} und {} gesagt?".format(movie, actor)
     return statement(speech_text).simple_card('MovieSearch', speech_text)
 
 @ask.intent('SearchProducer')

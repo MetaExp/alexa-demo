@@ -1,0 +1,18 @@
+# List of packages which are needed for development and deployment
+numpy==1.14.0
+sklearn
+typing
+pytest
+flask
+pandas
+flask-cors
+scipy
+# TODO: Introduce development (non-deployment) dependencies
+redis
+pytest-cov
+Flask-Session
+cryptography==2.1.4
+flask-ask
+neo4j-driver
+tensorflow>=1.7.0
+matplotlib

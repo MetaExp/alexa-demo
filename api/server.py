@@ -26,7 +26,7 @@ CORS(app, supports_credentials=True, resources={r"/*": {
     "origins": ["https://hpi.de/mueller/metaexp-demo-api/", "http://172.20.14.22:3000", "http://localhost",
                 "http://localhost:3000", "http://metaexp.herokuapp.com"]}})
 
-
+secondName = "Bodo"
 def run(port, hostname, debug_mode):
     app.run(host=hostname, port=port, debug=debug_mode, threaded=True)
 
@@ -37,14 +37,13 @@ def start():
 
 @ask.intent("ProblemDescription")
 def problem_description(firstName, secondName):
-    session['secondName'] = secondName
     return question("Erzählt mir von euren verschiedenen Vorlieben. Was sind deine Vorlieben, {}?".format(firstName))
 
 @ask.intent("PreferenceDialog")
 def preference_dialog(firstPreference, secondPreference):
     dialog_state = get_dialog_state()
     if dialog_state != "COMPLETED":
-        return elicit_slot(secondPreference, "Und du, {}? Was sind deine Vorlieben?".format(session['secondName']))
+        return elicit_slot(secondPreference, "Und du, {}? Was sind deine Vorlieben?".format(secondName))
     return question("Okay, lasst mich euer Problem lösen. Ich bin ein super Streitschlichter.")
 
 def get_dialog_state():

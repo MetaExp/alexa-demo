@@ -5,7 +5,7 @@ import json
 import os
 import time
 import datetime
-from flask_ask import Ask, statement, question, session, delegate
+from flask_ask import Ask, statement, question, session, delegate, elicit_slot
 import logging
 from typing import Dict
 
@@ -30,7 +30,6 @@ CORS(app, supports_credentials=True, resources={r"/*": {
 def run(port, hostname, debug_mode):
     app.run(host=hostname, port=port, debug=debug_mode, threaded=True)
 
-
 @ask.launch
 def start():
     speech_text = "Willkommen bei MetaExp. Einer interaktiven Graphexplorationssoftware. Wie kann ich behilflich sein?"
@@ -38,13 +37,14 @@ def start():
 
 @ask.intent("ProblemDescription")
 def problem_description(firstName, secondName):
+    session['secondName'] = secondName
     return question("Erzählt mir von euren verschiedenen Vorlieben. Was sind deine Vorlieben, {}?".format(firstName))
 
 @ask.intent("PreferenceDialog")
 def preference_dialog(firstPreference, secondPreference):
     dialog_state = get_dialog_state()
     if dialog_state != "COMPLETED":
-        return delegate()
+        return elicit_slot(secondPreference, "Und du, {}? Was sind deine Vorlieben?".format(session['secondName']))
     return question("Okay, lasst mich euer Problem lösen. Ich bin ein super Streitschlichter.")
 
 def get_dialog_state():

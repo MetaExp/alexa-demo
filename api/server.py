@@ -34,18 +34,18 @@ def run(port, hostname, debug_mode):
 @ask.launch
 def start():
     speech_text = "Willkommen bei MetaExp. Einer interaktiven Graphexplorationssoftware. Wie kann ich behilflich sein?"
-    return statement(speech_text).simple_card("Greeting", speech_text)
+    return question(speech_text).simple_card("Greeting", speech_text)
 
 @ask.intent("ProblemDescription")
 def problem_description(firstName, secondName):
-    return statement("Erzählt mir von euren verschiedenen Vorlieben. Was sind deine Vorlieben, {}?".format(firstName))
+    return question("Erzählt mir von euren verschiedenen Vorlieben. Was sind deine Vorlieben, {}?".format(firstName))
 
 @ask.intent("PreferenceDialog")
 def preference_dialog(firstPreference, secondPreference):
     dialog_state = get_dialog_state()
     if dialog_state != "COMPLETED":
         return delegate()
-    return statement("OK")
+    return question("Okay, lasst mich euer Problem lösen. Ich bin ein super Streitschlichter.")
 
 def get_dialog_state():
     return session['dialogState']

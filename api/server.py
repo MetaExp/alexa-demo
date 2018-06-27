@@ -26,32 +26,31 @@ CORS(app, supports_credentials=True, resources={r"/*": {
     "origins": ["https://hpi.de/mueller/metaexp-demo-api/", "http://172.20.14.22:3000", "http://localhost",
                 "http://localhost:3000", "http://metaexp.herokuapp.com"]}})
 
-second_name = "Bodo"
+
 def run(port, hostname, debug_mode):
     app.run(host=hostname, port=port, debug=debug_mode, threaded=True)
+
 
 @ask.launch
 def start():
     speech_text = "Willkommen bei MetaExp. Einer interaktiven Graphexplorationssoftware. Wie kann ich behilflich sein?"
     return question(speech_text).simple_card("Greeting", speech_text)
 
+
 @ask.intent("ProblemDescription")
-def problem_description(firstName, secondName):
-    global second_name
-    second_name = secondName
-    return question("Erzählt mir von euren verschiedenen Vorlieben. Was sind deine Vorlieben, {}?".format(firstName))
+def problem_description():
+    return question("Erzählt mir von euren verschiedenen Vorlieben.")
+
 
 @ask.intent("PreferenceDialog")
 def preference_dialog(firstPreference, secondPreference):
     dialog_state = get_dialog_state()
     if dialog_state == "STARTED":
         return delegate()
-    elif dialog_state != "COMPLETED":
-        return elicit_slot(secondPreference, "Und du, {}? Was sind deine Vorlieben?".format(second_name))
-    else:
-        return statement("Okay, lasst mich euer Problem lösen. Ich bin ein super Streitschlichter."
-                    "Glücklicherweise habe ich gerade in meinem Knowledge Graph einen Film gefunden der euch beide "
-                    "zufriedenstellt. Der Film ist" )
+    return statement("Okay, lasst mich euer Problem lösen. Ich bin ein super Streitschlichter."
+                    "Glücklicherweise habe ich gerade in meinem Knowledge Graph einen Film gefunden der eure beiden"
+                     "Vorlieben {} und {} zufriedenstellt. Der Film heißt Top Gun!" .format(firstPreference, secondPreference))
+
 
 def get_dialog_state():
     return session['dialogState']

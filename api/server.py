@@ -33,7 +33,7 @@ def run(port, hostname, debug_mode):
 
 @ask.launch
 def start():
-    speech_text = "Willkommen bei MetaExp. Einer interaktiven Graphexplorationssoftware. Wie kann ich behilflich sein?"
+    speech_text = "Aspirin wirkt außerdem noch fiebersenkend, infarkvorbeugend und antirheumatisch"
     return question(speech_text).simple_card("Greeting", speech_text)
 
 
